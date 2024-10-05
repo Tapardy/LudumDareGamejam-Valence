@@ -25,7 +25,7 @@ public class SnapToCircle : MonoBehaviour
             if (other.TryGetComponent(out Rigidbody2D playerRb))
             {
                 playerRb.velocity = Vector2.zero;
-                playerRb.angularVelocity = 0f;
+                // playerRb.angularVelocity = 0f;
                 playerRb.bodyType = RigidbodyType2D.Kinematic;
                 _snappedPlayer = other.transform;
                 CalculatePlayerAngle();
@@ -70,7 +70,6 @@ public class SnapToCircle : MonoBehaviour
 
             _snappedPlayer.position = Vector2.Lerp(_snappedPlayer.position, targetPosition, snapSpeed * Time.fixedDeltaTime);
 
-            // Rotate player to face tangent to the circle
             float tangentAngle = targetAngle + Mathf.PI / 2;
             _snappedPlayer.rotation = Quaternion.Euler(0, 0, tangentAngle * Mathf.Rad2Deg);
         }
