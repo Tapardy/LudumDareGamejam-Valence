@@ -381,7 +381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Circle
       objectReference: {fileID: 0}
     - target: {fileID: 3111500601416811081, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Enabled
@@ -431,6 +431,10 @@ PrefabInstance:
       propertyPath: rotateCircle
       value: 
       objectReference: {fileID: 1925416066}
+    - target: {fileID: 4819253583336312601, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: reattachCooldown
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: rotationSpeed
       value: 50
@@ -458,7 +462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Circle
       objectReference: {fileID: 0}
     - target: {fileID: 3111500601416811081, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Enabled
@@ -508,6 +512,10 @@ PrefabInstance:
       propertyPath: rotateCircle
       value: 
       objectReference: {fileID: 1045596165}
+    - target: {fileID: 4819253583336312601, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: reattachCooldown
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: rotationSpeed
       value: 50
@@ -557,7 +565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Circle
       objectReference: {fileID: 0}
     - target: {fileID: 3111500601416811081, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Enabled
@@ -607,6 +615,10 @@ PrefabInstance:
       propertyPath: rotateCircle
       value: 
       objectReference: {fileID: 60391636}
+    - target: {fileID: 4819253583336312601, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: reattachCooldown
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: clockwise
       value: 1
@@ -638,7 +650,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Circle
       objectReference: {fileID: 0}
     - target: {fileID: 3111500601416811081, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Enabled
@@ -688,6 +700,10 @@ PrefabInstance:
       propertyPath: rotateCircle
       value: 
       objectReference: {fileID: 529731431}
+    - target: {fileID: 4819253583336312601, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: reattachCooldown
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: rotationSpeed
       value: 50
@@ -820,7 +836,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.45
 --- !u!50 &1774063860
 Rigidbody2D:
   serializedVersion: 4
@@ -860,16 +876,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7033edc7bc1505d45815bb4edbb56991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundTag: Circle
-  minJumpForce: 3
-  maxJumpForce: 10
-  jumpForceMultiplier: 5
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   isGrounded: 0
   rb: {fileID: 1774063860}
-  groundCheckRadius: 1
+  groundCheckRadius: 0.5
+  triggerCollider: {fileID: 1774063863}
+  jumpForce: 0
+  minJumpForce: 3
+  maxJumpForce: 10
+  jumpForceMultiplier: 5
 --- !u!114 &1774063862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -980,7 +997,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Circle
       objectReference: {fileID: 0}
     - target: {fileID: 3111500601416811081, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Enabled
@@ -1034,6 +1051,10 @@ PrefabInstance:
       propertyPath: rotateCircle
       value: 
       objectReference: {fileID: 1492848832}
+    - target: {fileID: 4819253583336312601, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: reattachCooldown
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: clockwise
       value: 1
