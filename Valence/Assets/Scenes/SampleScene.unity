@@ -847,6 +847,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isGrounded: 0
+  rb: {fileID: 1774063860}
 --- !u!114 &1774063862
 MonoBehaviour:
   m_ObjectHideFlags: 0
