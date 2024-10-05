@@ -56,8 +56,8 @@ namespace RotatingCircle
 			var radius = _circleCollider.radius;
 			Vector2 circleCenter = transform.position;
 
-			_playerAngle = Mathf.Atan2(playerTransform.position.y - circleCenter.y,
-				playerTransform.position.x - circleCenter.x) * Mathf.Rad2Deg;
+			_playerAngle = Mathf.Atan2(playerTransform.position.y - circleCenter.y, playerTransform.position.x - circleCenter.x) *
+			               Mathf.Rad2Deg;
 
 			playerTransform.position = circleCenter +
 			                           new Vector2(Mathf.Cos(_playerAngle * Mathf.Deg2Rad), Mathf.Sin(_playerAngle * Mathf.Deg2Rad)) *
