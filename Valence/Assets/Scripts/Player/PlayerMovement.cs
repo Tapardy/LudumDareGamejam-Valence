@@ -24,7 +24,7 @@ namespace Player
 			if (_rb == null) enabled = false;
 		}
 
-		private void Update()
+		private void FixedUpdate()
 		{
 			isGrounded = !_jumping && Physics2D.OverlapCircle(transform.position, 0.1f, groundLayer);
 
