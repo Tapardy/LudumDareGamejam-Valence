@@ -122,6 +122,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &60391636 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+  m_PrefabInstance: {fileID: 1510117308}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d9e901ba9b6e7040873f831fdb58bdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,6 +270,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &529731431 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+  m_PrefabInstance: {fileID: 1532744053}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d9e901ba9b6e7040873f831fdb58bdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,13 +375,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: RotatingCircle (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.192
+      value: -3.42
       objectReference: {fileID: 0}
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.327
+      value: 2.18
       objectReference: {fileID: 0}
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalPosition.z
@@ -393,6 +423,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4819253583336312601, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: rotateCircle
+      value: 
+      objectReference: {fileID: 1925416066}
+    - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: rotationSpeed
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -409,6 +447,14 @@ PrefabInstance:
     - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Name
       value: RotatingCircle (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalPosition.x
@@ -450,11 +496,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4819253583336312601, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: rotateCircle
+      value: 
+      objectReference: {fileID: 1045596165}
+    - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: rotationSpeed
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+--- !u!114 &1045596165 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+  m_PrefabInstance: {fileID: 924565723}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d9e901ba9b6e7040873f831fdb58bdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1492848832 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+  m_PrefabInstance: {fileID: 1713642034151287748}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d9e901ba9b6e7040873f831fdb58bdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1510117308
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -467,13 +543,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: RotatingCircle (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.442
+      value: 4.34
       objectReference: {fileID: 0}
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.602
+      value: 2.17
       objectReference: {fileID: 0}
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalPosition.z
@@ -507,6 +591,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4819253583336312601, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: rotateCircle
+      value: 
+      objectReference: {fileID: 60391636}
+    - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: rotationSpeed
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -523,6 +615,14 @@ PrefabInstance:
     - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Name
       value: RotatingCircle (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalPosition.x
@@ -564,6 +664,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4819253583336312601, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: rotateCircle
+      value: 
+      objectReference: {fileID: 529731431}
+    - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: rotationSpeed
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -581,6 +689,8 @@ GameObject:
   - component: {fileID: 1774063857}
   - component: {fileID: 1774063860}
   - component: {fileID: 1774063859}
+  - component: {fileID: 1774063862}
+  - component: {fileID: 1774063861}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -717,6 +827,83 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1774063861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774063856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7033edc7bc1505d45815bb4edbb56991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundTag: Circle
+  minJumpForce: 5
+  maxJumpForce: 100
+  jumpForceMultiplier: 10
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  isGrounded: 0
+--- !u!114 &1774063862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774063856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 0357bc328d54fe545b82372ba32d5012, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1774063861}
+        m_TargetAssemblyTypeName: Player.PlayerMovement, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a5e70022-6097-43b5-92e4-e5b3c981985d
+    m_ActionName: PlayerMovement/Jump[/Keyboard/space,/DualSenseGamepadHID/buttonSouth]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: PlayerMovement
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1925416066 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+  m_PrefabInstance: {fileID: 647802472}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d9e901ba9b6e7040873f831fdb58bdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1713642034151287748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -728,6 +915,14 @@ PrefabInstance:
     - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Name
       value: RotatingCircle
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalPosition.x
@@ -768,6 +963,14 @@ PrefabInstance:
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819253583336312601, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: rotateCircle
+      value: 
+      objectReference: {fileID: 1492848832}
+    - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: rotationSpeed
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

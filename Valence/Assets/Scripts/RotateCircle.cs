@@ -1,20 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RotateCircle : MonoBehaviour
 {
-    [SerializeField] private Transform circle; 
-    [SerializeField] private float rotationSpeed = 10f; 
-    [SerializeField] private bool clockwise = false; 
+	[SerializeField] private Transform circle;
+	public float rotationSpeed = 10f;
+	[SerializeField] private bool clockwise;
 
-    private void FixedUpdate()
-    {
-        float direction = clockwise ? -1f : 1f;
+	private void FixedUpdate()
+	{
+		var direction = clockwise ? -1f : 1f;
 
-        float rotationAmount = direction * rotationSpeed * Time.fixedDeltaTime;
+		var rotationAmount = direction * rotationSpeed * Time.fixedDeltaTime;
 
-        circle.Rotate(0, 0, rotationAmount);
-    }
-
+		circle.Rotate(0, 0, rotationAmount);
+	}
 }
