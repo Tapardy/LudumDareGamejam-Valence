@@ -11,24 +11,21 @@ namespace Player
 		[SerializeField] private float jumpForceMultiplier = 1f;
 		[SerializeField] private LayerMask groundLayer;
 		[SerializeField] private bool isGrounded;
+		[SerializeField] private Rigidbody2D rb;
 		private bool _charging;
 		private float _jumpForce;
 		private bool _jumping;
-
-		private Rigidbody2D _rb;
 		private SnapToCircle _snapToCircle;
 
 		private void Awake()
 		{
-			_rb = GetComponent<Rigidbody2D>();
-			if (_rb == null) enabled = false;
+			if (rb == null) enabled = false;
 		}
 
 		private void FixedUpdate()
 		{
 			isGrounded = !_jumping && Physics2D.OverlapCircle(transform.position, 0.1f, groundLayer);
-
-			if (_charging) _jumpForce = Mathf.Clamp(_jumpForce + jumpForceMultiplier * Time.deltaTime, minJumpForce, maxJumpForce);
+			if (_charging) _jumpForce = Mathf.Clamp(_jumpForce + jumpForceMultiplier * Time.fixedDeltaTime, minJumpForce, maxJumpForce);
 		}
 
 		public void OnJump(InputAction.CallbackContext context)
@@ -49,7 +46,7 @@ namespace Player
 
 			var angle = _snapToCircle.GetPlayerAngle();
 			var jumpDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-			_rb.velocity = jumpDirection * _jumpForce;
+			rb.velocity = jumpDirection * _jumpForce;
 			_jumping = true;
 		}
 
