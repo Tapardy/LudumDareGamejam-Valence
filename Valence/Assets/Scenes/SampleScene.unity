@@ -369,7 +369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 1774063858}
   offset: {x: 0, y: 0, z: -10}
-  smoothSpeed: 0.5
+  smoothSpeed: 0
 --- !u!114 &529731431 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
