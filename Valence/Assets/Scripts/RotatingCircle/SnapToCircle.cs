@@ -29,19 +29,21 @@ namespace RotatingCircle
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
-			if (other.CompareTag(playerTag) && other.TryGetComponent(out Rigidbody2D playerRb))
-				if (other.TryGetComponent(out PlayerMovement playerMovement))
-				{
-					if (playerMovement.IsSnappedToCircle())
-						return;
+			if (other.CompareTag(playerTag) && other.TryGetComponent(out PlayerMovement playerMovement))
+			{
+				if (playerMovement.IsSnappedToCircle()) return;
 
-					playerRb.velocity = Vector2.zero;
-					playerRb.gravityScale = 0;
-					_snappedPlayer = other.transform;
+				if (!playerMovement.IsSnappedToCircle() && playerMovement.CanSnap)
+					if (other.TryGetComponent(out Rigidbody2D playerRb))
+					{
+						playerRb.velocity = Vector2.zero;
+						playerRb.gravityScale = 0;
+						_snappedPlayer = other.transform;
 
-					SnapPlayerToCircle(other.transform);
-					playerMovement.SetSnapToCircle(this);
-				}
+						SnapPlayerToCircle(other.transform);
+						playerMovement.SetSnapToCircle(this);
+					}
+			}
 		}
 
 		private void OnTriggerExit2D(Collider2D other)

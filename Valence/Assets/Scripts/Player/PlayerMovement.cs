@@ -13,14 +13,19 @@ namespace Player
 		[SerializeField] private float jumpForceMultiplier = 1f;
 		[SerializeField] private Transform playerSprite;
 		[SerializeField] private float maxCompressionScale = 0.5f;
+		[SerializeField] private float snapCooldownDuration = 1f;
+		[SerializeField] private string electronTag = "Electron";
 
 		private bool _charging;
 		private bool _jumping;
 
 		private Vector3 _originalScale;
+		private float _snapCooldownTimer;
 		private SnapToCircle _snapToCircle;
 
 		private bool IsGrounded { get; set; }
+
+		public bool CanSnap { get; private set; } = true;
 
 		private void Awake()
 		{
@@ -43,7 +48,23 @@ namespace Player
 				UpdateCompression();
 			}
 
-			Debug.Log($"Jumping: {_jumping}, Grounded: {IsGrounded}");
+			if (!CanSnap)
+			{
+				_snapCooldownTimer -= Time.fixedDeltaTime;
+				if (_snapCooldownTimer <= 0) CanSnap = true;
+			}
+
+			Debug.Log($"Jumping: {_jumping}, Grounded: {IsGrounded}, Can Snap: {CanSnap}");
+		}
+
+		private void OnCollisionEnter2D(Collision2D collision)
+		{
+			if (collision.gameObject.CompareTag(electronTag))
+			{
+				DetachFromCircle();
+				CanSnap = false;
+				_snapCooldownTimer = snapCooldownDuration;
+			}
 		}
 
 		public void OnJump(InputAction.CallbackContext context)
@@ -97,7 +118,6 @@ namespace Player
 			var compressionScale = Mathf.Lerp(1f, maxCompressionScale, compressionFactor);
 
 			playerSprite.localScale = new Vector3(_originalScale.x, compressionScale, _originalScale.z);
-
 			playerSprite.rotation = Quaternion.Euler(0, 0, angle + 90);
 		}
 
