@@ -23,31 +23,27 @@ namespace RotatingCircle
 
 		private void FixedUpdate()
 		{
-			if (_snappedPlayer != null && !IsPlayerJumping()) RotatePlayer();
+			if (_snappedPlayer != null && !IsPlayerJumping())
+				RotatePlayer();
 		}
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
-			if (other.CompareTag(playerTag) && _snappedPlayer == null && other.TryGetComponent(out Rigidbody2D playerRb))
-			{
-				playerRb.velocity = Vector2.zero;
-				playerRb.gravityScale = 0;
-				_snappedPlayer = other.transform;
-
-				SnapPlayerToCircle(other.transform);
-				other.TryGetComponent(out PlayerMovement playerMovement);
-				playerMovement?.SetSnapToCircle(this);
-			}
-		}
-
-		private void OnTriggerExit2D(Collider2D other)
-		{
 			if (other.CompareTag(playerTag) && other.TryGetComponent(out Rigidbody2D playerRb))
-			{
-				playerRb.gravityScale = 1;
-				_snappedPlayer = null;
-			}
+				if (other.TryGetComponent(out PlayerMovement playerMovement))
+				{
+					if (playerMovement.IsSnappedToCircle())
+						return;
+
+					playerRb.velocity = Vector2.zero;
+					playerRb.gravityScale = 0;
+					_snappedPlayer = other.transform;
+
+					SnapPlayerToCircle(other.transform);
+					playerMovement.SetSnapToCircle(this);
+				}
 		}
+
 
 		private void SnapPlayerToCircle(Transform playerTransform)
 		{
@@ -79,6 +75,8 @@ namespace RotatingCircle
 
 		public void DetachPlayer()
 		{
+			if (_snappedPlayer != null && _snappedPlayer.TryGetComponent(out Rigidbody2D playerRb)) playerRb.gravityScale = 1;
+
 			_snappedPlayer = null;
 		}
 

@@ -6,11 +6,7 @@ namespace Player
 {
 	public class PlayerMovement : MonoBehaviour
 	{
-		[SerializeField] private LayerMask groundLayer;
-		[SerializeField] private bool isGrounded;
 		[SerializeField] private Rigidbody2D rb;
-		[SerializeField] private float groundCheckRadius = 1f;
-		[SerializeField] private CircleCollider2D triggerCollider;
 		[SerializeField] private float jumpForce;
 		[SerializeField] private float minJumpForce = 3f;
 		[SerializeField] private float maxJumpForce = 10f;
@@ -18,6 +14,8 @@ namespace Player
 		private bool _charging;
 		private bool _jumping;
 		private SnapToCircle _snapToCircle;
+
+		private bool IsGrounded { get; set; }
 
 		private void Awake()
 		{
@@ -30,42 +28,26 @@ namespace Player
 
 		private void FixedUpdate()
 		{
-			isGrounded = Physics2D.OverlapCircle(triggerCollider.bounds.center, groundCheckRadius, groundLayer);
-			if (_charging) jumpForce = Mathf.Clamp(jumpForce + Time.fixedDeltaTime * jumpForceMultiplier, minJumpForce, maxJumpForce);
+			IsGrounded = _snapToCircle != null;
 
-			Debug.Log($"Jumping: {_jumping}, Grounded: {isGrounded}");
-		}
+			if (_charging)
+				jumpForce = Mathf.Clamp(jumpForce + Time.fixedDeltaTime * jumpForceMultiplier, minJumpForce, maxJumpForce);
 
-		private void OnDrawGizmos()
-		{
-			Gizmos.color = Color.red;
-			Gizmos.DrawWireSphere(triggerCollider.bounds.center, groundCheckRadius);
-		}
-
-		private void OnTriggerExit2D(Collider2D other)
-		{
-			if (other.CompareTag("Circle"))
-				isGrounded = false;
-		}
-
-		private void OnTriggerStay2D(Collider2D other)
-		{
-			if (other.CompareTag("Circle"))
-				isGrounded = true;
+			Debug.Log($"Jumping: {_jumping}, Grounded: {IsGrounded}");
 		}
 
 		public void OnJump(InputAction.CallbackContext context)
 		{
-			if (context.started && !isGrounded && !_jumping)
+			if (context.started && !IsGrounded && !_jumping)
 				rb.MovePosition(rb.position + Vector2.up * 0.001f);
 
-			if (context.started && isGrounded && !_jumping) _charging = true;
+			if (context.started && IsGrounded && !_jumping)
+				_charging = true;
 
 			if (context.canceled)
 			{
-				if (_charging && isGrounded)
+				if (_charging && IsGrounded)
 					Jump();
-				DetachFromCircle();
 				ResetJumpState();
 			}
 		}
@@ -80,6 +62,8 @@ namespace Player
 			rb.velocity = jumpDirection * jumpForce;
 			_jumping = true;
 			jumpForce = 0;
+
+			DetachFromCircle();
 		}
 
 		private void DetachFromCircle()
@@ -93,7 +77,8 @@ namespace Player
 
 		public void SetSnapToCircle(SnapToCircle snapToCircle)
 		{
-			if (snapToCircle != null) _snapToCircle = snapToCircle;
+			if (snapToCircle != null)
+				_snapToCircle = snapToCircle;
 		}
 
 		public bool IsJumping()
@@ -101,10 +86,15 @@ namespace Player
 			return _jumping;
 		}
 
+		public bool IsSnappedToCircle()
+		{
+			return _snapToCircle != null;
+		}
+
 		private void ResetJumpState()
 		{
 			_charging = false;
-			if (isGrounded)
+			if (IsGrounded)
 				_jumping = false;
 		}
 	}
