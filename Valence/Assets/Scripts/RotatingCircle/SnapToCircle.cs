@@ -46,7 +46,7 @@ namespace RotatingCircle
 
 		private void OnTriggerExit2D(Collider2D other)
 		{
-			if (other.CompareTag(playerTag) && other.transform == _snappedPlayer) DetachPlayer(); // Detach player when exiting the trigger
+			if (other.CompareTag(playerTag) && other.transform == _snappedPlayer) DetachPlayer();
 		}
 
 		private void SnapPlayerToCircle(Transform playerTransform)

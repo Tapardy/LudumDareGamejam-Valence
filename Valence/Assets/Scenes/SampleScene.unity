@@ -920,7 +920,9 @@ MonoBehaviour:
   jumpForce: 0
   minJumpForce: 5
   maxJumpForce: 10
-  jumpForceMultiplier: 5
+  jumpForceMultiplier: 4
+  playerSprite: {fileID: 195351676}
+  maxCompressionScale: 0.5
 --- !u!114 &1774063862
 MonoBehaviour:
   m_ObjectHideFlags: 0

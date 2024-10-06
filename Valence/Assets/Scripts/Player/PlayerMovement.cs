@@ -11,8 +11,13 @@ namespace Player
 		[SerializeField] private float minJumpForce = 3f;
 		[SerializeField] private float maxJumpForce = 10f;
 		[SerializeField] private float jumpForceMultiplier = 1f;
+		[SerializeField] private Transform playerSprite;
+		[SerializeField] private float maxCompressionScale = 0.5f;
+
 		private bool _charging;
 		private bool _jumping;
+
+		private Vector3 _originalScale;
 		private SnapToCircle _snapToCircle;
 
 		private bool IsGrounded { get; set; }
@@ -24,6 +29,8 @@ namespace Player
 				Debug.LogError("Rigidbody2D component not found!");
 				enabled = false;
 			}
+
+			_originalScale = playerSprite.localScale;
 		}
 
 		private void FixedUpdate()
@@ -31,7 +38,10 @@ namespace Player
 			IsGrounded = _snapToCircle != null;
 
 			if (_charging)
+			{
 				jumpForce = Mathf.Clamp(jumpForce + Time.fixedDeltaTime * jumpForceMultiplier, minJumpForce, maxJumpForce);
+				UpdateCompression();
+			}
 
 			Debug.Log($"Jumping: {_jumping}, Grounded: {IsGrounded}");
 		}
@@ -64,6 +74,7 @@ namespace Player
 			jumpForce = 0;
 
 			DetachFromCircle();
+			playerSprite.localScale = _originalScale;
 		}
 
 		private void DetachFromCircle()
@@ -73,6 +84,21 @@ namespace Player
 				_snapToCircle.DetachPlayer();
 				_snapToCircle = null;
 			}
+		}
+
+		private void UpdateCompression()
+		{
+			if (playerSprite == null || _snapToCircle == null) return;
+
+			var angle = _snapToCircle.GetPlayerAngle();
+			var jumpDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+
+			var compressionFactor = Mathf.InverseLerp(minJumpForce, maxJumpForce, jumpForce);
+			var compressionScale = Mathf.Lerp(1f, maxCompressionScale, compressionFactor);
+
+			playerSprite.localScale = new Vector3(_originalScale.x, compressionScale, _originalScale.z);
+
+			playerSprite.rotation = Quaternion.Euler(0, 0, angle + 90);
 		}
 
 		public void SetSnapToCircle(SnapToCircle snapToCircle)
@@ -95,7 +121,10 @@ namespace Player
 		{
 			_charging = false;
 			if (IsGrounded)
+			{
 				_jumping = false;
+				playerSprite.localScale = _originalScale;
+			}
 		}
 	}
 }
