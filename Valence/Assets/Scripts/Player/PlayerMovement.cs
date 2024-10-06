@@ -15,9 +15,11 @@ namespace Player
 		[SerializeField] private float maxCompressionScale = 0.5f;
 		[SerializeField] private float snapCooldownDuration = 1f;
 		[SerializeField] private string electronTag = "Electron";
-
+		[SerializeField] private SpriteRenderer spriteRenderer;
 		private bool _charging;
 		private bool _jumping;
+
+		private Color _originalColor;
 		private Vector3 _originalScale;
 		private float _snapCooldownTimer;
 		private SnapToCircle _snapToCircle;
@@ -28,6 +30,7 @@ namespace Player
 
 		private void Awake()
 		{
+			_originalColor = spriteRenderer.color;
 			if (!TryGetComponent(out rb))
 			{
 				Debug.LogError("Rigidbody2D component not found!");
@@ -64,7 +67,11 @@ namespace Player
 			if (!CanSnap)
 			{
 				_snapCooldownTimer -= Time.fixedDeltaTime;
-				if (_snapCooldownTimer <= 0) CanSnap = true;
+				if (_snapCooldownTimer <= 0)
+				{
+					spriteRenderer.color = _originalColor;
+					CanSnap = true;
+				}
 			}
 
 			// Debug.Log($"Jumping: {_jumping}, Grounded: {IsGrounded}, Can Snap: {CanSnap}");
@@ -76,6 +83,7 @@ namespace Player
 			{
 				DetachFromCircle();
 				CanSnap = false;
+				spriteRenderer.color = Color.red;
 				_snapCooldownTimer = snapCooldownDuration;
 			}
 		}
