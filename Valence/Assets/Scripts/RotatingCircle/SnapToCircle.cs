@@ -23,30 +23,30 @@ namespace RotatingCircle
 
 		private void FixedUpdate()
 		{
-			if (_snappedPlayer != null && !IsPlayerJumping()) RotatePlayer();
+			if (_snappedPlayer != null && !IsPlayerJumping())
+				RotatePlayer();
 		}
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
-			if (other.CompareTag(playerTag) && _snappedPlayer == null && other.TryGetComponent(out Rigidbody2D playerRb))
-			{
-				playerRb.velocity = Vector2.zero;
-				playerRb.gravityScale = 0;
-				_snappedPlayer = other.transform;
+			if (other.CompareTag(playerTag) && other.TryGetComponent(out Rigidbody2D playerRb))
+				if (other.TryGetComponent(out PlayerMovement playerMovement))
+				{
+					if (playerMovement.IsSnappedToCircle())
+						return;
 
-				SnapPlayerToCircle(other.transform);
-				other.TryGetComponent(out PlayerMovement playerMovement);
-				playerMovement?.SetSnapToCircle(this);
-			}
+					playerRb.velocity = Vector2.zero;
+					playerRb.gravityScale = 0;
+					_snappedPlayer = other.transform;
+
+					SnapPlayerToCircle(other.transform);
+					playerMovement.SetSnapToCircle(this);
+				}
 		}
 
 		private void OnTriggerExit2D(Collider2D other)
 		{
-			if (other.CompareTag(playerTag) && other.TryGetComponent(out Rigidbody2D playerRb))
-			{
-				playerRb.gravityScale = 1;
-				_snappedPlayer = null;
-			}
+			if (other.CompareTag(playerTag) && other.transform == _snappedPlayer) DetachPlayer();
 		}
 
 		private void SnapPlayerToCircle(Transform playerTransform)
@@ -56,8 +56,8 @@ namespace RotatingCircle
 			var radius = _circleCollider.radius;
 			Vector2 circleCenter = transform.position;
 
-			_playerAngle = Mathf.Atan2(playerTransform.position.y - circleCenter.y,
-				playerTransform.position.x - circleCenter.x) * Mathf.Rad2Deg;
+			_playerAngle = Mathf.Atan2(playerTransform.position.y - circleCenter.y, playerTransform.position.x - circleCenter.x) *
+			               Mathf.Rad2Deg;
 
 			playerTransform.position = circleCenter +
 			                           new Vector2(Mathf.Cos(_playerAngle * Mathf.Deg2Rad), Mathf.Sin(_playerAngle * Mathf.Deg2Rad)) *
@@ -79,6 +79,9 @@ namespace RotatingCircle
 
 		public void DetachPlayer()
 		{
+			if (_snappedPlayer != null && _snappedPlayer.TryGetComponent(out Rigidbody2D playerRb))
+				playerRb.gravityScale = 1;
+
 			_snappedPlayer = null;
 		}
 
