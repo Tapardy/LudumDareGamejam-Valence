@@ -154,7 +154,7 @@ namespace Player
 			for (var i = 0; i < trajectoryPoints; i++)
 			{
 				var time = i * timeStep;
-				var displacement = velocity * time + 0.5f * Physics2D.gravity * time * time;
+				var displacement = velocity * time + Physics2D.gravity * (0.5f * time * time);
 				lineRenderer.SetPosition(i, startingPosition + displacement);
 			}
 		}
