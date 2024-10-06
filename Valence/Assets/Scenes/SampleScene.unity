@@ -645,7 +645,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8301392349620111175, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Name
@@ -661,7 +661,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3111500601416811081, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalPosition.x
@@ -876,7 +876,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.45
+  m_Radius: 0.4
 --- !u!50 &1774063860
 Rigidbody2D:
   serializedVersion: 4
@@ -916,15 +916,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7033edc7bc1505d45815bb4edbb56991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  isGrounded: 0
   rb: {fileID: 1774063860}
-  groundCheckRadius: 0.5
-  triggerCollider: {fileID: 1774063863}
   jumpForce: 0
-  minJumpForce: 3
+  minJumpForce: 5
   maxJumpForce: 10
   jumpForceMultiplier: 5
 --- !u!114 &1774063862
@@ -1007,7 +1001,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.33
+  m_Radius: 0.05
 --- !u!114 &1925416066 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
@@ -1027,6 +1021,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8301392349620111175, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2994978543042626987, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Name
       value: RotatingCircle
@@ -1041,7 +1039,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3111500601416811081, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3514126923092193222, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1097,7 +1095,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: clockwise
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8290194323291802536, guid: 83eea6b6280a2904f8691a3fe6fb8434, type: 3}
       propertyPath: rotationSpeed

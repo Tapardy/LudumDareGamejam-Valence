@@ -44,6 +44,10 @@ namespace RotatingCircle
 				}
 		}
 
+		private void OnTriggerExit2D(Collider2D other)
+		{
+			if (other.CompareTag(playerTag) && other.transform == _snappedPlayer) DetachPlayer(); // Detach player when exiting the trigger
+		}
 
 		private void SnapPlayerToCircle(Transform playerTransform)
 		{
@@ -75,7 +79,8 @@ namespace RotatingCircle
 
 		public void DetachPlayer()
 		{
-			if (_snappedPlayer != null && _snappedPlayer.TryGetComponent(out Rigidbody2D playerRb)) playerRb.gravityScale = 1;
+			if (_snappedPlayer != null && _snappedPlayer.TryGetComponent(out Rigidbody2D playerRb))
+				playerRb.gravityScale = 1;
 
 			_snappedPlayer = null;
 		}
