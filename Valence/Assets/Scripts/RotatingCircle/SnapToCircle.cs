@@ -16,33 +16,31 @@ namespace RotatingCircle
 		{
 			if (!TryGetComponent(out _circleCollider))
 			{
-				Debug.LogError("no circle collider found");
+				Debug.LogError("No circle collider found");
 				enabled = false;
 			}
 		}
 
 		private void FixedUpdate()
 		{
-			if (_snappedPlayer != null && !IsPlayerJumping())
-				RotatePlayer();
+			if (_snappedPlayer != null && !IsPlayerJumping()) RotatePlayer();
 		}
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
 			if (other.CompareTag(playerTag) && other.TryGetComponent(out PlayerMovement playerMovement))
 			{
-				if (playerMovement.IsSnappedToCircle()) return;
+				if (playerMovement.IsSnappedToCircle() || !playerMovement.CanSnap) return;
 
-				if (!playerMovement.IsSnappedToCircle() && playerMovement.CanSnap)
-					if (other.TryGetComponent(out Rigidbody2D playerRb))
-					{
-						playerRb.velocity = Vector2.zero;
-						playerRb.gravityScale = 0;
-						_snappedPlayer = other.transform;
+				if (other.TryGetComponent(out Rigidbody2D playerRb))
+				{
+					playerRb.velocity = Vector2.zero;
+					playerRb.gravityScale = 0;
+					_snappedPlayer = other.transform;
 
-						SnapPlayerToCircle(other.transform);
-						playerMovement.SetSnapToCircle(this);
-					}
+					SnapPlayerToCircle(other.transform);
+					playerMovement.SetSnapToCircle(this);
+				}
 			}
 		}
 
@@ -55,15 +53,22 @@ namespace RotatingCircle
 		{
 			if (_snappedPlayer == null) return;
 
-			var radius = _circleCollider.radius;
+			var radius = _circleCollider.radius; // Use the collider's radius directly
 			Vector2 circleCenter = transform.position;
 
 			_playerAngle = Mathf.Atan2(playerTransform.position.y - circleCenter.y, playerTransform.position.x - circleCenter.x) *
 			               Mathf.Rad2Deg;
 
-			playerTransform.position = circleCenter +
-			                           new Vector2(Mathf.Cos(_playerAngle * Mathf.Deg2Rad), Mathf.Sin(_playerAngle * Mathf.Deg2Rad)) *
-			                           radius;
+			var newPosition = circleCenter +
+			                  new Vector2(Mathf.Cos(_playerAngle * Mathf.Deg2Rad), Mathf.Sin(_playerAngle * Mathf.Deg2Rad)) * radius;
+
+			playerTransform.position = newPosition;
+
+			// Debug log for tracking the snapping behavior
+			Debug.Log(
+				$"Snapping Player: {playerTransform.name}, New Position: {newPosition}, Circle Center: {circleCenter}, Radius: {radius}");
+
+			if (playerTransform.TryGetComponent(out PlayerMovement playerMovement)) playerMovement.SetSnapToCircle(this);
 		}
 
 		private void RotatePlayer()
@@ -72,7 +77,8 @@ namespace RotatingCircle
 
 			var direction = rotateCircle.clockwise ? -1f : 1f;
 			_playerAngle += direction * rotateCircle.rotationSpeed * Time.fixedDeltaTime;
-			var radius = _circleCollider.radius;
+
+			var radius = _circleCollider.radius; // Adjust the player's position using the collider's radius
 			Vector2 circleCenter = transform.position;
 			_snappedPlayer.position = circleCenter +
 			                          new Vector2(Mathf.Cos(_playerAngle * Mathf.Deg2Rad), Mathf.Sin(_playerAngle * Mathf.Deg2Rad)) *
@@ -81,8 +87,7 @@ namespace RotatingCircle
 
 		public void DetachPlayer()
 		{
-			if (_snappedPlayer != null && _snappedPlayer.TryGetComponent(out Rigidbody2D playerRb))
-				playerRb.gravityScale = 1;
+			if (_snappedPlayer != null && _snappedPlayer.TryGetComponent(out Rigidbody2D playerRb)) playerRb.gravityScale = 1;
 
 			_snappedPlayer = null;
 		}

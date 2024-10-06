@@ -18,7 +18,6 @@ namespace Player
 
 		private bool _charging;
 		private bool _jumping;
-
 		private Vector3 _originalScale;
 		private float _snapCooldownTimer;
 		private SnapToCircle _snapToCircle;
@@ -36,6 +35,16 @@ namespace Player
 			}
 
 			_originalScale = playerSprite.localScale;
+
+#if UNITY_EDITOR
+			if (lineRenderer == null)
+			{
+				lineRenderer = gameObject.AddComponent<LineRenderer>();
+				lineRenderer.positionCount = trajectoryPoints;
+				lineRenderer.startWidth = 0.05f;
+				lineRenderer.endWidth = 0.05f;
+			}
+#endif
 		}
 
 		private void FixedUpdate()
@@ -46,6 +55,10 @@ namespace Player
 			{
 				jumpForce = Mathf.Clamp(jumpForce + Time.fixedDeltaTime * jumpForceMultiplier, minJumpForce, maxJumpForce);
 				UpdateCompression();
+
+#if UNITY_EDITOR
+				UpdateJumpTrajectory();
+#endif
 			}
 
 			if (!CanSnap)
@@ -54,7 +67,7 @@ namespace Player
 				if (_snapCooldownTimer <= 0) CanSnap = true;
 			}
 
-			Debug.Log($"Jumping: {_jumping}, Grounded: {IsGrounded}, Can Snap: {CanSnap}");
+			// Debug.Log($"Jumping: {_jumping}, Grounded: {IsGrounded}, Can Snap: {CanSnap}");
 		}
 
 		private void OnCollisionEnter2D(Collision2D collision)
@@ -96,6 +109,10 @@ namespace Player
 
 			DetachFromCircle();
 			playerSprite.localScale = _originalScale;
+
+#if UNITY_EDITOR
+			lineRenderer.positionCount = 0;
+#endif
 		}
 
 		private void DetachFromCircle()
@@ -121,6 +138,28 @@ namespace Player
 			playerSprite.rotation = Quaternion.Euler(0, 0, angle + 90);
 		}
 
+#if UNITY_EDITOR
+		private void UpdateJumpTrajectory()
+		{
+			if (_snapToCircle == null) return;
+
+			var angle = _snapToCircle.GetPlayerAngle();
+			var jumpDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+			var startingPosition = rb.position;
+			var velocity = jumpDirection * jumpForce;
+			var timeStep = Time.fixedDeltaTime;
+
+			lineRenderer.positionCount = trajectoryPoints;
+
+			for (var i = 0; i < trajectoryPoints; i++)
+			{
+				var time = i * timeStep;
+				var displacement = velocity * time + Physics2D.gravity * (0.5f * time * time);
+				lineRenderer.SetPosition(i, startingPosition + displacement);
+			}
+		}
+#endif
+
 		public void SetSnapToCircle(SnapToCircle snapToCircle)
 		{
 			if (snapToCircle != null)
@@ -144,7 +183,16 @@ namespace Player
 			{
 				_jumping = false;
 				playerSprite.localScale = _originalScale;
+
+#if UNITY_EDITOR
+				lineRenderer.positionCount = 0;
+#endif
 			}
 		}
+
+#if UNITY_EDITOR
+		[SerializeField] private LineRenderer lineRenderer;
+		[SerializeField] private int trajectoryPoints = 30;
+#endif
 	}
 }
