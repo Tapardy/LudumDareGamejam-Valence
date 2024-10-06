@@ -67,7 +67,7 @@ namespace Player
 				if (_snapCooldownTimer <= 0) CanSnap = true;
 			}
 
-			Debug.Log($"Jumping: {_jumping}, Grounded: {IsGrounded}, Can Snap: {CanSnap}");
+			// Debug.Log($"Jumping: {_jumping}, Grounded: {IsGrounded}, Can Snap: {CanSnap}");
 		}
 
 		private void OnCollisionEnter2D(Collision2D collision)
