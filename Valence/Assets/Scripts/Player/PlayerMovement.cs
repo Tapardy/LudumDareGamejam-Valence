@@ -25,7 +25,7 @@ namespace Player
 		private float _snapCooldownTimer;
 		private SnapToCircle _snapToCircle;
 
-		private bool IsGrounded { get; set; }
+		internal bool IsGrounded { get; set; }
 		public bool CanSnap { get; private set; } = true;
 
 		private void Awake()
