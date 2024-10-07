@@ -7,6 +7,7 @@ namespace Player
 	public class PlayerMovement : MonoBehaviour
 	{
 		[SerializeField] private Rigidbody2D rb;
+		[SerializeField] private float maxFallSpeed = -10f;
 		[SerializeField] private float jumpForce;
 		[SerializeField] private float minJumpForce = 3f;
 		[SerializeField] private float maxJumpForce = 10f;
@@ -74,6 +75,7 @@ namespace Player
 			}
 
 			if (IsGrounded && _snapToCircle != null) UpdateRotation();
+			if (rb.velocity.y < maxFallSpeed) rb.velocity = new Vector2(rb.velocity.x, maxFallSpeed);
 		}
 
 		private void OnCollisionEnter2D(Collision2D collision)
