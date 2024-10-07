@@ -9,28 +9,28 @@ public class TutorialManager : MonoBehaviour
 
 	private void Start()
 	{
-		tutorialCanvas.SetActive(false); // Hide the canvas by default
+		tutorialCanvas.SetActive(false);
 
-		if (!tutorial.HasSeenTutorial) ShowTutorialCanvas(); // Show only if the tutorial hasn't been seen
+		if (!tutorial.HasSeenTutorial) ShowTutorialCanvas();
 	}
 
 	private void ShowTutorialCanvas()
 	{
-		tutorialCanvas.SetActive(true); // Show the tutorial canvas
-		Time.timeScale = 0f; // Pause the game
-		okButton.onClick.AddListener(OnOkButtonPressed); // Add listener for button
+		tutorialCanvas.SetActive(true);
+		Time.timeScale = 0f;
+		okButton.onClick.AddListener(OnOkButtonPressed);
 	}
 
 	public void OnOkButtonPressed()
 	{
-		tutorial.CompleteTutorial(); // Mark tutorial as seen
-		HideTutorialCanvas(); // Hide the canvas
+		tutorial.CompleteTutorial();
+		HideTutorialCanvas();
 	}
 
 	private void HideTutorialCanvas()
 	{
-		tutorialCanvas.SetActive(false); // Hide the tutorial canvas
-		Time.timeScale = 1f; // Resume the game
-		okButton.onClick.RemoveListener(OnOkButtonPressed); // Remove listener for button
+		tutorialCanvas.SetActive(false);
+		Time.timeScale = 1f;
+		okButton.onClick.RemoveListener(OnOkButtonPressed);
 	}
 }

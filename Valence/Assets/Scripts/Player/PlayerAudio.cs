@@ -8,7 +8,6 @@ namespace Player
 		[SerializeField] private PlayerMovement playerMovement;
 		[SerializeField] private AudioSource chargeAudioSource;
 		[SerializeField] private AudioSource jumpAudioSource;
-		[SerializeField] private AudioSource hitAudioSource;
 		[SerializeField] private PlayerInput playerInput;
 
 		private void OnEnable()
@@ -25,21 +24,23 @@ namespace Player
 
 		private void OnJumpStarted(InputAction.CallbackContext context)
 		{
-			if (playerMovement.IsGrounded && !playerMovement.IsJumping())
-				if (chargeAudioSource != null && !chargeAudioSource.isPlaying)
-					chargeAudioSource.Play();
+			if (!playerMovement.IsPlayerVictorious())
+				if (playerMovement.IsGrounded && !playerMovement.IsJumping())
+					if (chargeAudioSource != null && !chargeAudioSource.isPlaying)
+						chargeAudioSource.Play();
 		}
 
 		private void OnJumpCanceled(InputAction.CallbackContext context)
 		{
-			if (playerMovement.IsGrounded && !playerMovement.IsJumping())
-			{
-				if (chargeAudioSource != null && chargeAudioSource.isPlaying)
-					chargeAudioSource.Stop();
+			if (!playerMovement.IsPlayerVictorious())
+				if (playerMovement.IsGrounded && !playerMovement.IsJumping())
+				{
+					if (chargeAudioSource != null && chargeAudioSource.isPlaying)
+						chargeAudioSource.Stop();
 
-				if (jumpAudioSource != null)
-					jumpAudioSource.Play();
-			}
+					if (jumpAudioSource != null)
+						jumpAudioSource.Play();
+				}
 		}
 	}
 }

@@ -18,6 +18,8 @@ namespace Player
 		[SerializeField] private string electronTag = "Electron";
 		[SerializeField] private SpriteRenderer spriteRenderer;
 		[SerializeField] private Sprite hitSpriteRenderer;
+		[SerializeField] private Sprite winSprite;
+		[SerializeField] private bool isVictorious;
 		private bool _charging;
 		private bool _jumping;
 		private Vector3 _originalScale;
@@ -38,30 +40,30 @@ namespace Player
 			}
 
 			_originalScale = playerSprite.localScale;
-
-#if UNITY_EDITOR
-			if (lineRenderer == null)
-			{
-				lineRenderer = gameObject.AddComponent<LineRenderer>();
-				lineRenderer.positionCount = trajectoryPoints;
-				lineRenderer.startWidth = 0.05f;
-				lineRenderer.endWidth = 0.05f;
-			}
-#endif
 		}
 
 		private void FixedUpdate()
 		{
+			if (isVictorious)
+			{
+				// Allow movement and rotation based on circle snapping
+				IsGrounded = _snapToCircle != null;
+
+				if (IsGrounded && _snapToCircle != null)
+					UpdateRotation();
+
+				if (rb.velocity.y < maxFallSpeed)
+					rb.velocity = new Vector2(rb.velocity.x, maxFallSpeed);
+
+				return; // Skip the rest of the FixedUpdate when victorious
+			}
+
 			IsGrounded = _snapToCircle != null;
 
 			if (_charging)
 			{
 				jumpForce = Mathf.Clamp(jumpForce + Time.fixedDeltaTime * jumpForceMultiplier, minJumpForce, maxJumpForce);
 				UpdateCompression();
-
-#if UNITY_EDITOR
-				UpdateJumpTrajectory();
-#endif
 			}
 
 			if (!CanSnap)
@@ -74,8 +76,11 @@ namespace Player
 				}
 			}
 
-			if (IsGrounded && _snapToCircle != null) UpdateRotation();
-			if (rb.velocity.y < maxFallSpeed) rb.velocity = new Vector2(rb.velocity.x, maxFallSpeed);
+			if (IsGrounded && _snapToCircle != null)
+				UpdateRotation();
+
+			if (rb.velocity.y < maxFallSpeed)
+				rb.velocity = new Vector2(rb.velocity.x, maxFallSpeed);
 		}
 
 		private void OnCollisionEnter2D(Collision2D collision)
@@ -91,6 +96,8 @@ namespace Player
 
 		public void OnJump(InputAction.CallbackContext context)
 		{
+			if (isVictorious) return; // Skip any jump action if victorious
+
 			if (context.started && !IsGrounded && !_jumping)
 				rb.MovePosition(rb.position + Vector2.up * 0.001f);
 
@@ -119,10 +126,6 @@ namespace Player
 			DetachFromCircle();
 			playerSprite.localScale = _originalScale;
 			UpdateRotation();
-
-#if UNITY_EDITOR
-			lineRenderer.positionCount = 0;
-#endif
 		}
 
 		private void DetachFromCircle()
@@ -152,31 +155,8 @@ namespace Player
 			if (_snapToCircle == null) return;
 
 			var angle = _snapToCircle.GetPlayerAngle();
-
 			playerSprite.rotation = Quaternion.Euler(0, 0, angle - 90);
 		}
-
-#if UNITY_EDITOR
-		private void UpdateJumpTrajectory()
-		{
-			if (_snapToCircle == null) return;
-
-			var angle = _snapToCircle.GetPlayerAngle();
-			var jumpDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-			var startingPosition = rb.position;
-			var velocity = jumpDirection * jumpForce;
-			var timeStep = Time.fixedDeltaTime;
-
-			lineRenderer.positionCount = trajectoryPoints;
-
-			for (var i = 0; i < trajectoryPoints; i++)
-			{
-				var time = i * timeStep;
-				var displacement = velocity * time + Physics2D.gravity * (0.5f * time * time);
-				lineRenderer.SetPosition(i, startingPosition + displacement);
-			}
-		}
-#endif
 
 		public void SetSnapToCircle(SnapToCircle snapToCircle)
 		{
@@ -201,16 +181,19 @@ namespace Player
 			{
 				_jumping = false;
 				playerSprite.localScale = _originalScale;
-
-#if UNITY_EDITOR
-				lineRenderer.positionCount = 0;
-#endif
 			}
 		}
 
-#if UNITY_EDITOR
-		[SerializeField] private LineRenderer lineRenderer;
-		[SerializeField] private int trajectoryPoints = 30;
-#endif
+		// I am completely aware this is bad practice, but like. I have no time and this will do :)
+		public void TriggerVictory()
+		{
+			isVictorious = true;
+			spriteRenderer.sprite = winSprite;
+		}
+
+		public bool IsPlayerVictorious()
+		{
+			return isVictorious;
+		}
 	}
 }
