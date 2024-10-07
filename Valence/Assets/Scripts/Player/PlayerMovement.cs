@@ -16,21 +16,20 @@ namespace Player
 		[SerializeField] private float snapCooldownDuration = 1f;
 		[SerializeField] private string electronTag = "Electron";
 		[SerializeField] private SpriteRenderer spriteRenderer;
+		[SerializeField] private Sprite hitSpriteRenderer;
 		private bool _charging;
 		private bool _jumping;
-
-		private Color _originalColor;
 		private Vector3 _originalScale;
+		private Sprite _originalSprite;
 		private float _snapCooldownTimer;
 		private SnapToCircle _snapToCircle;
 
 		private bool IsGrounded { get; set; }
-
 		public bool CanSnap { get; private set; } = true;
 
 		private void Awake()
 		{
-			_originalColor = spriteRenderer.color;
+			_originalSprite = spriteRenderer.sprite;
 			if (!TryGetComponent(out rb))
 			{
 				Debug.LogError("Rigidbody2D component not found!");
@@ -69,12 +68,12 @@ namespace Player
 				_snapCooldownTimer -= Time.fixedDeltaTime;
 				if (_snapCooldownTimer <= 0)
 				{
-					spriteRenderer.color = _originalColor;
+					spriteRenderer.sprite = _originalSprite;
 					CanSnap = true;
 				}
 			}
 
-			// Debug.Log($"Jumping: {_jumping}, Grounded: {IsGrounded}, Can Snap: {CanSnap}");
+			if (IsGrounded && _snapToCircle != null) UpdateRotation();
 		}
 
 		private void OnCollisionEnter2D(Collision2D collision)
@@ -83,7 +82,7 @@ namespace Player
 			{
 				DetachFromCircle();
 				CanSnap = false;
-				spriteRenderer.color = Color.red;
+				spriteRenderer.sprite = hitSpriteRenderer;
 				_snapCooldownTimer = snapCooldownDuration;
 			}
 		}
@@ -117,6 +116,7 @@ namespace Player
 
 			DetachFromCircle();
 			playerSprite.localScale = _originalScale;
+			UpdateRotation();
 
 #if UNITY_EDITOR
 			lineRenderer.positionCount = 0;
@@ -136,14 +136,22 @@ namespace Player
 		{
 			if (playerSprite == null || _snapToCircle == null) return;
 
-			var angle = _snapToCircle.GetPlayerAngle();
-			var jumpDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-
 			var compressionFactor = Mathf.InverseLerp(minJumpForce, maxJumpForce, jumpForce);
-			var compressionScale = Mathf.Lerp(1f, maxCompressionScale, compressionFactor);
+			var compressionScale = Mathf.Lerp(1f, 1f - maxCompressionScale, compressionFactor);
 
-			playerSprite.localScale = new Vector3(_originalScale.x, compressionScale, _originalScale.z);
-			playerSprite.rotation = Quaternion.Euler(0, 0, angle + 90);
+			playerSprite.localScale =
+				new Vector3(_originalScale.x, _originalScale.y * compressionScale, _originalScale.z);
+
+			UpdateRotation();
+		}
+
+		private void UpdateRotation()
+		{
+			if (_snapToCircle == null) return;
+
+			var angle = _snapToCircle.GetPlayerAngle();
+
+			playerSprite.rotation = Quaternion.Euler(0, 0, angle - 90);
 		}
 
 #if UNITY_EDITOR
