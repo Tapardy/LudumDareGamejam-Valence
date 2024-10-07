@@ -53,7 +53,7 @@ namespace RotatingCircle
 		{
 			if (_snappedPlayer == null) return;
 
-			var radius = _circleCollider.radius; // Use the collider's radius directly
+			var radius = _circleCollider.radius;
 			Vector2 circleCenter = transform.position;
 
 			_playerAngle = Mathf.Atan2(playerTransform.position.y - circleCenter.y, playerTransform.position.x - circleCenter.x) *
@@ -64,7 +64,6 @@ namespace RotatingCircle
 
 			playerTransform.position = newPosition;
 
-			// Debug log for tracking the snapping behavior
 			Debug.Log(
 				$"Snapping Player: {playerTransform.name}, New Position: {newPosition}, Circle Center: {circleCenter}, Radius: {radius}");
 
@@ -78,7 +77,7 @@ namespace RotatingCircle
 			var direction = rotateCircle.clockwise ? -1f : 1f;
 			_playerAngle += direction * rotateCircle.rotationSpeed * Time.fixedDeltaTime;
 
-			var radius = _circleCollider.radius; // Adjust the player's position using the collider's radius
+			var radius = _circleCollider.radius;
 			Vector2 circleCenter = transform.position;
 			_snappedPlayer.position = circleCenter +
 			                          new Vector2(Mathf.Cos(_playerAngle * Mathf.Deg2Rad), Mathf.Sin(_playerAngle * Mathf.Deg2Rad)) *

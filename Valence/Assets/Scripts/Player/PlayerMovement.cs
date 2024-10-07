@@ -7,6 +7,7 @@ namespace Player
 	public class PlayerMovement : MonoBehaviour
 	{
 		[SerializeField] private Rigidbody2D rb;
+		[SerializeField] private float maxFallSpeed = -10f;
 		[SerializeField] private float jumpForce;
 		[SerializeField] private float minJumpForce = 3f;
 		[SerializeField] private float maxJumpForce = 10f;
@@ -15,19 +16,23 @@ namespace Player
 		[SerializeField] private float maxCompressionScale = 0.5f;
 		[SerializeField] private float snapCooldownDuration = 1f;
 		[SerializeField] private string electronTag = "Electron";
-
+		[SerializeField] private SpriteRenderer spriteRenderer;
+		[SerializeField] private Sprite hitSpriteRenderer;
+		[SerializeField] private Sprite winSprite;
+		[SerializeField] private bool isVictorious;
 		private bool _charging;
 		private bool _jumping;
 		private Vector3 _originalScale;
+		private Sprite _originalSprite;
 		private float _snapCooldownTimer;
 		private SnapToCircle _snapToCircle;
 
-		private bool IsGrounded { get; set; }
-
+		internal bool IsGrounded { get; set; }
 		public bool CanSnap { get; private set; } = true;
 
 		private void Awake()
 		{
+			_originalSprite = spriteRenderer.sprite;
 			if (!TryGetComponent(out rb))
 			{
 				Debug.LogError("Rigidbody2D component not found!");
@@ -35,39 +40,47 @@ namespace Player
 			}
 
 			_originalScale = playerSprite.localScale;
-
-#if UNITY_EDITOR
-			if (lineRenderer == null)
-			{
-				lineRenderer = gameObject.AddComponent<LineRenderer>();
-				lineRenderer.positionCount = trajectoryPoints;
-				lineRenderer.startWidth = 0.05f;
-				lineRenderer.endWidth = 0.05f;
-			}
-#endif
 		}
 
 		private void FixedUpdate()
 		{
+			if (isVictorious)
+			{
+				// Allow movement and rotation based on circle snapping
+				IsGrounded = _snapToCircle != null;
+
+				if (IsGrounded && _snapToCircle != null)
+					UpdateRotation();
+
+				if (rb.velocity.y < maxFallSpeed)
+					rb.velocity = new Vector2(rb.velocity.x, maxFallSpeed);
+
+				return; // Skip the rest of the FixedUpdate when victorious
+			}
+
 			IsGrounded = _snapToCircle != null;
 
 			if (_charging)
 			{
 				jumpForce = Mathf.Clamp(jumpForce + Time.fixedDeltaTime * jumpForceMultiplier, minJumpForce, maxJumpForce);
 				UpdateCompression();
-
-#if UNITY_EDITOR
-				UpdateJumpTrajectory();
-#endif
 			}
 
 			if (!CanSnap)
 			{
 				_snapCooldownTimer -= Time.fixedDeltaTime;
-				if (_snapCooldownTimer <= 0) CanSnap = true;
+				if (_snapCooldownTimer <= 0)
+				{
+					spriteRenderer.sprite = _originalSprite;
+					CanSnap = true;
+				}
 			}
 
-			// Debug.Log($"Jumping: {_jumping}, Grounded: {IsGrounded}, Can Snap: {CanSnap}");
+			if (IsGrounded && _snapToCircle != null)
+				UpdateRotation();
+
+			if (rb.velocity.y < maxFallSpeed)
+				rb.velocity = new Vector2(rb.velocity.x, maxFallSpeed);
 		}
 
 		private void OnCollisionEnter2D(Collision2D collision)
@@ -76,12 +89,15 @@ namespace Player
 			{
 				DetachFromCircle();
 				CanSnap = false;
+				spriteRenderer.sprite = hitSpriteRenderer;
 				_snapCooldownTimer = snapCooldownDuration;
 			}
 		}
 
 		public void OnJump(InputAction.CallbackContext context)
 		{
+			if (isVictorious) return; // Skip any jump action if victorious
+
 			if (context.started && !IsGrounded && !_jumping)
 				rb.MovePosition(rb.position + Vector2.up * 0.001f);
 
@@ -109,10 +125,7 @@ namespace Player
 
 			DetachFromCircle();
 			playerSprite.localScale = _originalScale;
-
-#if UNITY_EDITOR
-			lineRenderer.positionCount = 0;
-#endif
+			UpdateRotation();
 		}
 
 		private void DetachFromCircle()
@@ -128,37 +141,22 @@ namespace Player
 		{
 			if (playerSprite == null || _snapToCircle == null) return;
 
-			var angle = _snapToCircle.GetPlayerAngle();
-			var jumpDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-
 			var compressionFactor = Mathf.InverseLerp(minJumpForce, maxJumpForce, jumpForce);
-			var compressionScale = Mathf.Lerp(1f, maxCompressionScale, compressionFactor);
+			var compressionScale = Mathf.Lerp(1f, 1f - maxCompressionScale, compressionFactor);
 
-			playerSprite.localScale = new Vector3(_originalScale.x, compressionScale, _originalScale.z);
-			playerSprite.rotation = Quaternion.Euler(0, 0, angle + 90);
+			playerSprite.localScale =
+				new Vector3(_originalScale.x, _originalScale.y * compressionScale, _originalScale.z);
+
+			UpdateRotation();
 		}
 
-#if UNITY_EDITOR
-		private void UpdateJumpTrajectory()
+		private void UpdateRotation()
 		{
 			if (_snapToCircle == null) return;
 
 			var angle = _snapToCircle.GetPlayerAngle();
-			var jumpDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-			var startingPosition = rb.position;
-			var velocity = jumpDirection * jumpForce;
-			var timeStep = Time.fixedDeltaTime;
-
-			lineRenderer.positionCount = trajectoryPoints;
-
-			for (var i = 0; i < trajectoryPoints; i++)
-			{
-				var time = i * timeStep;
-				var displacement = velocity * time + Physics2D.gravity * (0.5f * time * time);
-				lineRenderer.SetPosition(i, startingPosition + displacement);
-			}
+			playerSprite.rotation = Quaternion.Euler(0, 0, angle - 90);
 		}
-#endif
 
 		public void SetSnapToCircle(SnapToCircle snapToCircle)
 		{
@@ -183,16 +181,19 @@ namespace Player
 			{
 				_jumping = false;
 				playerSprite.localScale = _originalScale;
-
-#if UNITY_EDITOR
-				lineRenderer.positionCount = 0;
-#endif
 			}
 		}
 
-#if UNITY_EDITOR
-		[SerializeField] private LineRenderer lineRenderer;
-		[SerializeField] private int trajectoryPoints = 30;
-#endif
+		// I am completely aware this is bad practice, but like. I have no time and this will do :)
+		public void TriggerVictory()
+		{
+			isVictorious = true;
+			spriteRenderer.sprite = winSprite;
+		}
+
+		public bool IsPlayerVictorious()
+		{
+			return isVictorious;
+		}
 	}
 }
